@@ -1,0 +1,193 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    .backround {
+        margin: 2px;
+        padding: 5px;
+        width: 100%;
+        height: 600px;
+        align-content: center;
+        align-items: center;
+    }
+
+    .innercont {
+        background-color: aliceblue;
+        width: 90%;
+        padding: 30px;
+        align-content: center;
+        align-items: center;
+        border-radius: 40px;
+        margin-left: 10%;
+        border: 20px;
+        border-color: black;
+        height: 500px;
+        position:center;
+       
+    }
+
+        .innercont h1 {
+            margin: 20px;
+            color: darkblue;
+            text-align: center;
+        }
+
+        .innercont lable {
+            text-align:center ;
+            padding: 30px;
+            font-weight:800;
+            font-size: 20px;
+            margin-top:20px;
+        }
+
+        .innercont input {
+            font-weight: 100;
+            font-size: 16px;
+            height: 40px;
+            border-color:lightblue;
+            border-radius: 5px;
+            width:600px;
+        }
+
+        .innercont button {
+            background-color: darkblue;
+            color: white;
+            width: 150px;
+            height: 30px;
+            border: none;
+            border-radius: 10px;
+            align-content:center;
+            align-items:center;
+            text-align:center;
+           
+        }
+
+        .innercont tr {
+            height:50px;
+            width: 100%;
+            align-content: center;
+            align-self: center;
+
+        }
+
+    innercont table {
+        table-layout: fixed;
+        width:100%;
+        align-content:center;
+        align-self:center;
+    }
+    #text {
+        font-size: 20px;
+        padding: 10px;
+        align-items:center;
+        align-content:center;
+        margin:10px;
+        text-align:center;
+    }
+
+    .form1 {
+    display: flex
+;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.button {
+    display: flex
+;
+    flex-direction: column;
+    align-items: center;
+}
+</style>
+
+<div class="backround">
+    <div class="innercont">
+
+<h1>Register</h1>
+<div class="form1">
+            <div>
+               
+                <table>
+                    <tr>
+                        <td> <lable>Enter your Name:</lable></td>
+                        <td> <input name="Name" id="Name" type="text" placeholder="Enter your Name" class="input" /></td>
+                    </tr>
+                    <tr>
+                        <td> <lable>Enter your Email:</lable></td>
+                        <td><input name="Email" id="Email" type="text" placeholder="Enter your Email" class="input" /></td>
+                    </tr>
+                    <tr>
+                        <td>  <lable>Enter your Username:</lable></td>
+                        <td> <input name="Username" id="Username" type="text" placeholder="Enter your Username" class="input" /></td>
+                    </tr>
+                    <tr>
+                        <td> <lable>Enter your Password:</lable></td>
+                        <td> <input name="Password" id="Password" type="password" placeholder="Enter your Password"  /></td>
+                    </tr>
+                    <tr>
+                        <td>  <lable>Enter your Role:</lable></td>
+                        <td> <input name="Role" id="Role" type="text" placeholder="Admin or users"  /></td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="button">
+                <button id="submit" name="submit" type="submit" value="submit">sign up</button>
+                <p id="text">After Registration done go to   <a asp-action="Login">Login</a> Page </p>
+            </div>
+
+</div>
+      
+</div>
+    
+
+</div>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('')
+        $('#submit').click(
+        function(){
+           
+             debugger;
+            var Name=$('#Name').val();
+            var Email=$('#Email').val();
+            var Username=$('#Username').val();
+            var Password=$('#Password').val();
+            var Role=$('#Role').val();
+             if (Name && Email && Username && Password && Role) {
+            $.ajax({
+                type:'POST',
+                url:'/Todolists/ReceiveData',
+                contentType: 'application/json',
+                data:JSON.stringify({
+                    Name:Name,
+                    Email:Email,
+                    Username:Username,
+                    Password:Password,
+                    Role:Role,
+
+                }),
+                success:function(response){
+                    alert(response.message);
+                    console.log(response.data)
+                },
+                 error: function(){
+                alert('Error occured');
+            }
+            
+            });
+                    } else {
+            alert('All fields are required.');
+        }
+
+        });
+
+
+
+    </script>
+}

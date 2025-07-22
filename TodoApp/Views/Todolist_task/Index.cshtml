@@ -1,0 +1,89 @@
+﻿@model IEnumerable<TodoApp.Models.Todolist_task>
+
+@{
+    ViewData["Title"] = "Index";
+    
+}
+<style>
+    .backgraoung{
+        width:90%;
+        height:auto;
+        background-color:lightcyan;
+        margin:20px;
+        padding:20px;
+        border-radius:10px;
+    }
+
+    .title  {
+       font-size:20px;
+       font-weight:600;
+    }
+
+    .dec {
+        font-size: 15px;
+        font-weight: 300;
+    }
+
+   
+
+    .disabled-link {
+        width:200px;
+        height:70px;
+        background-color: darkblue;
+        color:white;
+        align-items:center;
+        align-content:center;
+        text-align:center;
+        font-size:40px;
+        border-radius:80%;
+        text-decoration:none;
+        padding:2px;
+    
+    
+    }
+
+
+
+</style>
+<div class="bet">
+
+    <a asp-action="Task" class="disabled-link">+</a>
+
+
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="backgraoung"  >
+        
+            <div class="title">
+                    @Html.DisplayFor(modelItem => item.Title)
+
+            </div >
+                 <div class="dec">
+        @Html.DisplayFor(modelItem => item.TaskDescription)
+
+            </div>
+    <div class="date">
+        @Html.DisplayFor(modelItem => item.TaskDate)
+
+    </div>
+        <a asp-action="Edit" asp-route-id="@item.TaskId">Edit</a> 
+      
+        <a asp-action="Delete" asp-route-id="@item.TaskId">Delete</a>
+    </div>
+}
+
+
+           
+               
+            
+           
+               
+           
+        
+           
+        
+    
+
+
