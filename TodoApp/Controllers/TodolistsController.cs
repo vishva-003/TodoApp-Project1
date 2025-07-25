@@ -20,9 +20,16 @@ namespace TodoApp.Controllers
         }
 
         // GET: Todolists
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Todolist.ToListAsync());
+            var list=await _context.Todolist.ToListAsync();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(n => n.Name.Contains(searchString) || n.Username.Contains(searchString)).ToList();
+            }
+            return View(list);
+            
         }
 
         //Register 
@@ -67,7 +74,8 @@ namespace TodoApp.Controllers
             if (user != null)
             {
                 TempData["Id"] = user.Id;
-                TempData["Role"] = user.Role;
+                TempData["useId"] = user.Id;
+
                 if (user.Role == "Admin")
                 {
                     return Json(new { success = true, redirectUrl = "/Todo_Admin/Admin_Tasks"});

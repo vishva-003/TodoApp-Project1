@@ -8,12 +8,13 @@
 <div>
 
     <lable>Enter your Title:</lable>
-    <input name="Admin_Title " id="Admin_Title " type="text" placeholder="Enter your Title" />
+    <input name="Admin_Title" id="Admin_Title" type="text" placeholder="Enter your Title" />
     <br /><br />
     <lable>Enter your Description:</lable>
-    <input name="Description" id="TaskDescription" type="text" placeholder="Enter your Description" />
+    <input name="Admin_Description" id="Admin_Description" type="text" placeholder="Enter your Description" />
     <br /><br />
-
+    <lable>Enter your Task Deadline:</lable>
+    <input name="Deadline" id="Deadline" type="date" placeholder="Enter your Task Deadline" />
     <br /><br />
     <button id="submit" name="submit">ADD</button>
 </div>
@@ -27,24 +28,24 @@
         function(){
 
             debugger;
-            var Admin_Title =$('#Admin_Title ').val();
-            var TaskDescription=$('#TaskDescription').val();
-
-
-
+            var Admin_Title=$('#Admin_Title').val();
+            var Admin_Description=$('#Admin_Description').val();
+            var A_TaskDeadline=$('#Deadline').val();
             $.ajax({
                 type:'POST',
-                url:'/Todolist_task/ReceiveData',
+                url:'/Todo_Admin/DataRec',
                 contentType: 'application/json',
                 data:JSON.stringify({
                     Admin_Title :Admin_Title ,
-                    TaskDescription:TaskDescription,
+                    Admin_Description:Admin_Description,
+                    A_TaskDeadline:A_TaskDeadline,
 
 
                 }),
                 success:function(response){
                     alert(response.message);
                     window.location.href = response.redirectUrl;
+                    console.log(Admin_Title)
                 },
                  error: function(){
                 alert('Error occured');

@@ -24,66 +24,193 @@
         font-weight: 300;
     }
 
-   
-
     .disabled-link {
-        width:200px;
-        height:70px;
         background-color: darkblue;
         color:white;
         align-items:center;
         align-content:center;
-        text-align:center;
-        font-size:40px;
         border-radius:80%;
         text-decoration:none;
         padding:2px;
-    
-    
+        display: inline-block;
+        width:60px;
+        height: 50px;
+        text-align:center;
+        font-size:30px;
+    }
+    .button{
+        text-decoration: none;
+        color:white;
+        background-color:blue;
+        width:80px;
+        height:25px;
+        border-radius:5px;
+        margin:5px;
+        display: inline-block;
+        text-align:center;  
+        align-content:center;
+        align-items:center;
+    }
+    .button a:hover{
+        color:white;
     }
 
+    #searchBar {
+        margin:2px;
+        padding:2px;
+        width:70%;
+        height:50px;
+    }
 
+    #status{
+        width:150px;
+        height:30px;
+        display:flex;
+        align-content:center;
+        text-align:center;
+        align-items:center;
+        margin:5px;
+        background-color:darkred;
+        color:white;    
+        border:none;
+        border-radius:20px;
+    }
+    #back{
+        display: inline-block;
+        width:120px;
+        height:50px;
+        background-color:blue;
+        color:white;
+        text-decoration:none;
+        align-content: center;
+        text-align: center;
+        align-items: center;
+    }
+    .ssb{
+        margin-top:20px;
+        margin-left:15px;
+        align-content:center;
+        align-items:center;
+        justify-content:space-between;
+        gap:20px;
+
+    }
+    #bs{
+        display: inline-block;
+        width: 120px;
+        height: 50px;
+        background-color: blue;
+        color: white;
+        text-decoration: none;
+        align-content: center;
+        text-align: center;
+        align-items: center;
+        border:none;
+    }
 
 </style>
 <div class="bet">
 
     <a asp-action="Task" class="disabled-link">+</a>
-
-
 </div>
+
+@* <input type="text" id="searchBar" placeholder="Search tasks..." />
+<div id="searchResults"></div> *@
+<div class="ssb">
+<form asp-action="Index" asp-controller="Todolist_task">
+    <input name="searchString" type="search" placeholder="search" aria-label="search" id="searchBar" />
+    <button type="submit" id="bs">Search...</button>
+    <a asp-action="Index" id="back">Back to search</a>
+</form>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+            $('#status').click(function () {
+                debugger;
+                    // var IsCompleted = ($('#status').val() ==="false"?true:false);
+                            let statusValue = $('#status').val(); 
+                            let IsCompleted = (statusValue === "true") ? false : true;
+                            var Title=$('#Title').val();
+                $.ajax({
+                    type:'POST',
+                    url: '/Todolist_task/Completed',
+                    contentType: 'application/json',
+                data: JSON.stringify({
+                IsCompleted: IsCompleted,             
+                Title:Title,
+
+                }),
+
+                      success: function (response) {
+                        
+                          alert(response.message);
+                              var statusValue = $('#status').val(); 
+
+        if (statusValue === "false") {
+            $('#status').text("Not completed");
+            $('#status').css('background-color', ''); 
+        } else {
+            $('#status').text("Completed");
+            $('#status').css('background-color', 'green');
+        }
+
+        },
+        error: function (ex) {
+            console.log(ex.message);
+            alert(ex.message);
+        }
+
+
+                });
+            });
+
+
+    </script>
+}
 
 @foreach (var item in Model)
 {
     <div class="backgraoung"  >
         
             <div class="title">
-                    @Html.DisplayFor(modelItem => item.Title)
+            <h2> @Html.DisplayFor(modelItem => item.Title) </h2>
 
-            </div >
+        </div >
                  <div class="dec">
-        @Html.DisplayFor(modelItem => item.TaskDescription)
+            <h3> @Html.DisplayFor(modelItem => item.TaskDescription)</h3>
 
             </div>
-    <div class="date">
-        @Html.DisplayFor(modelItem => item.TaskDate)
+  
+        <div class="date">
+            Task creation date:
+            @Html.DisplayFor(modelItem =>item.TaskDate ) 
+
+        </div>
+        <div class="date">
+              <strong>Task Deadline:</strong> @item.TaskDeadline
+            @{
+                var daysLeft = (item.TaskDeadline - DateTime.Now.Date);
+            }  a&emsp; Only @daysLeft days left
+            <br /> 
+         </div>
+        <div class="date">
+            <span>latest update time : @item.UpdatedTime</span>
+
+        </div>
+
+        <a asp-action="Edit" asp-route-id="@item.TaskId" class="button">Edit</a>
+
+        <a asp-action="Delete" asp-route-id="@item.TaskId" class="button">Delete</a>
+        <div class="com">
+            <button id="status" value="@item.IsCompleted" >Not Completed</button>
+            <input type="hidden" id="Title" value="@item.Title" />
+        </div>
 
     </div>
-        <a asp-action="Edit" asp-route-id="@item.TaskId">Edit</a> 
-      
-        <a asp-action="Delete" asp-route-id="@item.TaskId">Delete</a>
-    </div>
+
 }
-
-
-           
-               
-            
-           
-               
-           
-        
-           
-        
-    
-
-

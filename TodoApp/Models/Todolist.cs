@@ -35,6 +35,21 @@ namespace TodoApp.Models
         public DateTime? TaskDate { get; set; }
         public int? Id { get; set; }
 
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedTime { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+
+        public DateTime? TaskDeadline { get; set; }
+
+        public bool IsCompleted { get; set; }
+
+        public DateTime? UpdatedTime { get; set; }
+
+
+
+
 
     }
 
@@ -48,6 +63,13 @@ namespace TodoApp.Models
         public string? Admin_Description { get; set; }
         public DateTime? Admin_TaskDate { get; set; }
         public int? Id { get; set; }
+        public bool A_IsDeleted { get; set; }
+
+        public DateTime A_DeletedTime { get; set; }
+
+        public DateTime A_TaskDeadline { get; set; }
+
+        public bool? A_IsCompleted { get; set; }
 
 
     }

@@ -17,6 +17,11 @@
     <a asp-action="Login">Login </a>
 </p>
 
+<form asp-action="Index" asp-controller="Todolists">
+    <input name="searchString" type="search" placeholder="search" aria-label="search" />
+    <button type="submit"  >Search...</button>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -40,6 +45,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+        
+         
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

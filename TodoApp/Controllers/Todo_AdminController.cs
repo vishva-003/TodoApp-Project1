@@ -33,11 +33,11 @@ namespace TodoApp.Controllers
         }
         [HttpPost]
 
-        public async Task<JsonResult> ReceiveData([FromBody] Todo_Admin AddAdmintask)
+        public async Task<JsonResult>DataRec([FromBody] Todo_Admin AddAdmintask)
         {
-            int? Id = TempData["Id"] as int?;
-            string? Role = TempData["Role"] as string;
-            
+            int? Id = TempData["useId"] as int?;
+            ViewBag.useId = Id;
+
             if (AddAdmintask != null)
             {
 
@@ -49,7 +49,7 @@ namespace TodoApp.Controllers
                        
                         Admin_Title = AddAdmintask.Admin_Title,
                         Admin_Description = AddAdmintask.Admin_Description,
-                        Id=ViewBag.Id,
+                        Id=Id,
                         Admin_TaskDate = DateTime.Now,
                     };
                     
@@ -74,46 +74,7 @@ namespace TodoApp.Controllers
 
 
 
-        // GET: Todo_Admin/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var todo_Admin = await _context.Todo_Admin
-                .FirstOrDefaultAsync(m => m.Admin_Id == id);
-            if (todo_Admin == null)
-            {
-                return NotFound();
-            }
-
-            return View(todo_Admin);
-        }
-
-        // GET: Todo_Admin/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Todo_Admin/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Admin_Id,Admin_Title,Admin_Description,Admin_TaskDate,Id")] Todo_Admin todo_Admin)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(todo_Admin);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(todo_Admin);
-        }
-
+      
         // GET: Todo_Admin/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -128,37 +89,37 @@ namespace TodoApp.Controllers
                 return NotFound();
             }
             return View(todo_Admin);
+
         }
 
-        // POST: Todo_Admin/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        private bool Todolist_taskExists(int Id)
+        {
+            return _context.Todo_Admin.Any(e => e.Id == Id);
+        }
+
+ 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Admin_Id,Admin_Title,Admin_Description,Admin_TaskDate,Id")] Todo_Admin todo_Admin)
+        public async Task<IActionResult> Edit([Bind("Admin_Id,Admin_Title,Admin_Description,Admin_TaskDate")] Todo_Admin todo_Admin)
         {
-            if (id != todo_Admin.Admin_Id)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
+
+            if (ModelState.IsValid && todo_Admin.Admin_Id != null)
             {
                 try
                 {
-                    _context.Update(todo_Admin);
+                    var task = _context.Todo_Admin.FirstOrDefault(e => e.Admin_Id == todo_Admin.Admin_Id);
+
+                    task.Admin_TaskDate = todo_Admin.Admin_TaskDate;
+                    task.Admin_Description = todo_Admin.Admin_Description;
+                    task.Admin_Title = todo_Admin.Admin_Title;
+                    //_context.Update(todolist_task);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!Todo_AdminExists(todo_Admin.Admin_Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw ex;
                 }
                 return RedirectToAction(nameof(Index));
             }

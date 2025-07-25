@@ -3,51 +3,68 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    .backgraoung {
+        width: 90%;
+        height: auto;
+        background-color: lightcyan;
+        margin: 20px;
+        padding: 20px;
+        border-radius: 10px;
+    }
 
-<h1>Index</h1>
+    .title {
+        font-size: 20px;
+        font-weight: 600;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin_Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin_Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Admin_TaskDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Admin_Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Admin_Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Admin_TaskDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Admin_Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Admin_Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Admin_Id">Delete</a>
-            </td>
-        </tr>
+    .dec {
+        font-size: 15px;
+        font-weight: 300;
+    }
+    .disabled-link {
+        background-color: darkblue;
+        color: white;
+        align-items: center;
+        align-content: center;
+        text-align: center;
+        font-size: 40px;
+        border-radius: 80%;
+        text-decoration: none;
+        padding: 2px;
+    }
+    .bet{
+
+    }
+
+</style>
+<div class="bet">
+
+    <a asp-action="Admin_Tasks" class="disabled-link">+</a>
+
+
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="backgraoung">
+
+        <div class="title">
+            @Html.DisplayFor(modelItem => item.Admin_Title)
+
+        </div>
+        <div class="dec">
+            @Html.DisplayFor(modelItem => item.Admin_Description)
+
+        </div>
+        <div class="date">
+            @Html.DisplayFor(modelItem => item.Admin_TaskDate)
+
+        </div>
+        <a asp-action="Edit" asp-route-id="@item.Admin_Id">Edit</a>
+
+        <a asp-action="Delete" asp-route-id="@item.Admin_Id">Delete</a>
+    </div>
 }
-    </tbody>
-</table>
+
+
